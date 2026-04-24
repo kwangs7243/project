@@ -1,5 +1,5 @@
 from src.response_builder import ResponseBuilder
-
+from src.result_serializer import ResultSerializer as rs
 
 class QueryService:
     """
@@ -33,9 +33,10 @@ class QueryService:
             )
 
         result = self.analyzer.summary_by_year_month(year, month)
+        data = rs.monthly_summary(result)
 
         return ResponseBuilder.success(
             question_type="monthly_summary",
             message=f"{year}년 {month}월 소비 요약입니다.",
-            data=result
+            data=data
         )
