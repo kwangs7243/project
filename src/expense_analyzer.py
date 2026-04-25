@@ -348,7 +348,7 @@ class ExpenseAnalyzer:
         ratio_data["비중"] =(
             (ratio_data[type_name] / total)*100
             ).round(0).astype(int)
-        return ratio_data
+        return ratio_data[ratio_data["비중"] > 0]
     def _summary_excess_amount_vs_average(self,data:pd.DataFrame):
         pass
 

@@ -19,24 +19,60 @@ async function requestQuery(question_type, params = {}) {
 }
 
 
-function renderResult(data) {
-    document.getElementById("result").textContent =
-        JSON.stringify(data, null, 2);
+function renderTable(rows) {
+    if (!rows || rows.length === 0) {
+        result.innerHTML = "<p>데이터가 없습니다.</p>";
+        return;
+    }
+
+    const columns = Object.keys(rows[0]);
+
+    let html = "<table border='1'>";
+    html += "<tr>";
+
+    columns.forEach(col => {
+        html += `<th>${col}</th>`;
+    });
+
+    html += "</tr>";
+
+    rows.forEach(row => {
+        html += "<tr>";
+        columns.forEach(col => {
+            html += `<td>${row[col]}</td>`;
+        });
+        html += "</tr>";
+    });
+
+    html += "</table>";
+
+    result.innerHTML = html;
 }
 
+function renderResponse(response) {
+    if (!response.ok) {
+        result.textContent = response.message;
+        return;
+    }
+
+    if (Array.isArray(response.data)) {
+        renderTable(response.data);
+        return;
+    }
+
+    result.textContent = JSON.stringify(response.data, null, 2);
+}
 
 async function monthly_summary() {
     const year = document.getElementById("year").value;
     const month = document.getElementById("month").value;
 
-    const data = await requestQuery("monthly_summary", { year, month });
-
-    renderResult(data);
+    const response = await requestQuery("monthly_summary", { year, month });
+    renderResponse(response);
 }
 
 
 async function category_ratio() {
-    const data = await requestQuery("category_ratio");
-
-    renderResult(data);
+    const response = await requestQuery("category_ratio");
+    renderResponse(response);
 }
