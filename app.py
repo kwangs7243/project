@@ -16,10 +16,10 @@ def main():
 
 @app.route("/api/query", methods=["POST"])
 def query():
-    req:dict = request.get_json()
+    req:dict = request.get_json(silent=True) or {}
 
     question_type = req.get("question_type")
-    params = req.get("params")
+    params = req.get("params") or {}
     response = qs.handle(question_type,params)
 
     return jsonify(response)
