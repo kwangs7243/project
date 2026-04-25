@@ -1,6 +1,7 @@
 from src.data_analyzer import DataAnalyzer
 from src.expense_analyzer import ExpenseAnalyzer
 from src.query_service import QueryService
+from src.result_serializer import ResultSerializer as rs
 import pandas as pd
 import json
 da = DataAnalyzer()
@@ -13,6 +14,7 @@ params = {
     "year" : 2025,
     "month" : 1
 }
-result = qs.handle(question_type=question_type,params=params)
-print(json.dumps(result, ensure_ascii=False, indent=2))
+result = rs.category_ratio(ea.summary_category_expense_ratio())
+print(json.dumps(result,ensure_ascii=False,indent=2))
+# print(result)
 print(result.dtypes if hasattr(result, "dtypes") else "No dtypes")

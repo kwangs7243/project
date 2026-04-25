@@ -13,3 +13,9 @@ class ResultSerializer:
                 "순이익" : 0
             }
         return df.to_dict(orient="records")[0]
+    @staticmethod
+    def category_ratio(df:pd.DataFrame) -> list[dict]:
+        if df.empty:
+            return []
+        df = df.reset_index()
+        return df.to_dict(orient="records")

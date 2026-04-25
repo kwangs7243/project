@@ -14,6 +14,8 @@ class QueryService:
     def handle(self, question_type: str, params: dict) -> dict:
         if question_type == "monthly_summary":
             return self._monthly_summary(params)
+        if question_type == "category_ratio":
+            return self._category_ratio(params)
 
         return ResponseBuilder.error(
             question_type=question_type,
@@ -24,13 +26,28 @@ class QueryService:
     def _monthly_summary(self, params: dict) -> dict:
         year = params.get("year")
         month = params.get("month")
-
-        if (year is None) or (month is None):
+        if (year is None) or (year == "") or (month == "") or (month is None):
             return ResponseBuilder.error(
                 question_type="monthly_summary",
-                message="year와 month가 필요합니다.",
+                message="연이나 월이 입력되지 않았습니다.",
                 error_code="MISSING_PARAMS"
             )
+        try:
+            year = int(year)
+            month = int(month)
+        except(ValueError, TypeError):
+            return ResponseBuilder.error(
+                question_type= "monthly_summary",
+                message= "연과 월은 숫자여야 합니다.",
+                error_code= "INVALID_TYPE"
+            )
+        if not ( 1 <= month <= 12 ):
+            return ResponseBuilder.error(
+                question_type="monthly_summary",
+                message= "월은 1~12사이여야 합니다",
+                error_code= "INVALID_RANGE"
+            )
+
 
         result = self.analyzer.summary_by_year_month(year, month)
         data = rs.monthly_summary(result)
@@ -38,5 +55,13 @@ class QueryService:
         return ResponseBuilder.success(
             question_type="monthly_summary",
             message=f"{year}년 {month}월 소비 요약입니다.",
+            data=data
+        )
+    def _category_ratio(self, params:dict) -> dict:
+        result = self.analyzer.summary_category_expense_ratio()
+        data = rs.category_ratio(result)
+        return ResponseBuilder.success(
+            question_type="category_ratio",
+            message="카테고리별 지출 비중입니다",
             data=data
         )

@@ -5,8 +5,54 @@
         <title>가계부 분석</title>
     </head>
     <body>
-        <form action="/" method="POST"></form>
-        질문<input type="text" name="question">
-        <button type="submit">질문하기</button>
+        <div>
+            <label for="monthly_summary">특정 연월 요약</label><br>
+            <input id="year" placeholder="연도">
+            <input id="month" placeholder="월">
+            <button onclick="monthly_summary()">조회</button>
+        </div>
+        <div>
+            <label for="category_ratio">카테고리별 비중</label><br>
+            <button onclick="category_ratio()">조회</button>
+        </div>
+
+        <pre id="result"></pre>
+
+        <script>
+        async function monthly_summary() {
+        const year = document.getElementById("year").value;
+        const month = document.getElementById("month").value;
+
+        const res = await fetch("/api/query", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+            question_type: "monthly_summary",
+            params: { year, month }
+            })
+        });
+
+        const data = await res.json();
+
+        document.getElementById("result").textContent =
+            JSON.stringify(data, null, 2);
+        }
+
+        async function category_ratio() {
+        const res = await fetch("/api/query", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+            question_type: "category_ratio",
+            params: {}
+            })
+        });
+
+        const data = await res.json();
+
+        document.getElementById("result").textContent =
+            JSON.stringify(data, null, 2);
+        }
+        </script>
     </body>
 </html>
