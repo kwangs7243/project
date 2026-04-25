@@ -20,7 +20,7 @@ def query():
 
     question_type = req.get("question_type")
     params = req.get("params") or {}
-    response = qs.handle(question_type,params)
+    response = qs.handle(question_type, params)
 
     return jsonify(response)
 
