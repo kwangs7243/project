@@ -6,15 +6,14 @@
     </head>
     <body>
         <div>
-            <label for="monthly_summary">특정 연월 요약</label><br>
-            <input id="year" placeholder="연도">
-            <input id="month" placeholder="월">
-            <button class="btn MonthlySummary">조회</button>
+            <select name="query" id="query">
+                <option value="total_summary">전체요약</option>
+                <option value="monthly_summary_list">월별요약</option>
+                <option value="category_ratio">카테고리비중</option>
+            </select>
+            <button id="btn_query">조회</button>
         </div>
-        <div>
-            <label for="category_ratio">카테고리별 비중</label><br>
-            <button class="btn CategoryRatio">조회</button>
-        </div>
+        <hr>
 
         <pre id="result"></pre>
 

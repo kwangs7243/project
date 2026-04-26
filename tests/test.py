@@ -14,7 +14,7 @@ params = {
     "year" : 2025,
     "month" : 1
 }
-result = rs.category_ratio(ea.summary_category_expense_ratio())
+result = rs.month_summary(ea.summary_by_month())
 print(json.dumps(result,ensure_ascii=False,indent=2))
-# print(result)
-print(result.dtypes if hasattr(result, "dtypes") else "No dtypes")
+# print(ea.summary_by_month().reset_index().to_dict(orient="records"))
+# print(result.dtypes if hasattr(result, "dtypes") else "No dtypes")
