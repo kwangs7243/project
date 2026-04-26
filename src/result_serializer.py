@@ -27,6 +27,12 @@ class ResultSerializer:
         df = df.reset_index()
         return df.to_dict(orient="records")
     @staticmethod
+    def category_summary(df:pd.DataFrame) -> list[dict]:
+        if df.empty:
+            return []
+        df = df.reset_index()
+        return df.to_dict(orient="records")
+    @staticmethod
     def monthly_summary(df:pd.DataFrame) -> dict:
         if df.empty:
             return {

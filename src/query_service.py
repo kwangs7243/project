@@ -19,6 +19,8 @@ class QueryService:
             return self._monthly_summary_list(params)
         if question_type == "monthly_summary":
             return self._monthly_summary(params)
+        if question_type == "category_summary":
+            return self._category_summary(params)
         if question_type == "category_ratio":
             return self._category_ratio(params)
 
@@ -40,7 +42,7 @@ class QueryService:
         result = self.analyzer.summary_by_month()
         data = rs.monthly_summary_list(result)
         return ResponseBuilder.success(
-            question_type="month_summary",
+            question_type="monthly_summary_list",
             message="월별 요약입니다.",
             data=data
         )
@@ -70,13 +72,20 @@ class QueryService:
                 error_code= "INVALID_RANGE"
             )
 
-
         result = self.analyzer.summary_by_year_month(year, month)
         data = rs.monthly_summary(result)
 
         return ResponseBuilder.success(
             question_type="monthly_summary",
             message=f"{year}년 {month}월 소비 요약입니다.",
+            data=data
+        )
+    def _category_summary(self, params:dict) -> dict:
+        result = self.analyzer.summary_by_category_type()
+        data = rs.category_summary(result)
+        return ResponseBuilder.success(
+            question_type="category_summary",
+            message="카테고리별 요약입니다.",
             data=data
         )
     def _category_ratio(self, params:dict) -> dict:

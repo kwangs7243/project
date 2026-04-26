@@ -5,9 +5,6 @@ document.querySelector("#btn_query")
         renderText(result);
     });
 
-document.querySelector("#category_ratio")
-    .addEventListener("click", category_ratio);
-
 
 async function requestQuery(question_type, params = {}) {
     const result = await fetch("/api/query", {
