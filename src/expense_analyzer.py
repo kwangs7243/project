@@ -319,7 +319,7 @@ class ExpenseAnalyzer:
             return average_data[[type_name]]
         return average_data
 
-    def  _average_amount_by_year_month_type(self, data:pd.DataFrame, type_name:str=None) -> pd.date_rangea:
+    def  _average_amount_by_year_month_type(self, data:pd.DataFrame, type_name:str=None) -> pd.DataFrame:
         """
         데이터를 연월별 수입,지출 평균값으로 요약
         """
